@@ -157,6 +157,10 @@ img {
     color: var(--primary-color);
 }
 
+.about__data{
+    margin: 0 auto;
+}
+
 @media screen and (max-width: 767px) {
     .nav__menu {
         position: fixed;
@@ -676,10 +680,14 @@ img {
         order: 1;
         justify-self: center;
     }
-    .about__container,
+    
     .skills__container,
     .footer__container{
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about__container{
+        grid-template-columns: 1fr auto;
     }
 }
 
@@ -758,10 +766,10 @@ img {
         text-align: initial;
     }
     .about__info{
-        justify-content: space-between;
+        justify-content: space-around;
     }
     .about__buttons{
-        justify-content: initial;
+        justify-content: center;
     }
     .footer__container{
         grid-template-columns: repeat(3, 1fr);
