@@ -465,6 +465,14 @@ img {
     width: 70%;
 }
 
+.skills__lwc{
+    width: 85%;
+}
+
+.skills__native{
+    width: 55%;
+}
+
 .skills__node {
     width: 70%;
 }
