@@ -11,7 +11,7 @@
 :root {
     --header-height: 3rem;
     /* colors */
-    --hue-color: 180; 
+    --hue-color: 190; 
     --primary-color: hsl(var(--hue-color), 69%, 61%);
     --secondary-color: hsl(var(--hue-color), 69%, 61%);
     --primary-alt: hsl(var(--hue-color), 57%, 53%);
@@ -589,7 +589,7 @@ img {
 }
 
 .footer__copy {
-    font-size: var(--small-font-size);
+    font-size: var(--input-color);
     text-align: center;
     color: var(--text-color-light);
     margin-top: 3rem;
