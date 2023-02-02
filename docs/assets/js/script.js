@@ -101,7 +101,7 @@ const sr = ScrollReveal({
     reset: true
 });
 
-sr.reveal(`.home__data,.home__social, .home__img,
+sr.reveal(`.home__data, .home__img, .home__social,
             .about__data, .about__img,
             .services__content, .menu__content,
             .app__data, .app__img,
