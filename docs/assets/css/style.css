@@ -245,6 +245,11 @@ img {
     color: var(--primary-alt);
 }
 
+.home__social-icon img{
+    height: 26px;
+    object-fit: cover;
+}
+
 .home__blob {
     width: 200px;
     fill: var(--primary-color);
