@@ -4,6 +4,9 @@
 @font-face {
     font-family: 'Poppins';
     font-display: swap;
+    src: local('Poppins'), local('Poppins'),
+         url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2) format('woff2');
+  font-display: swap;
   }
 
 /* Varibles */
