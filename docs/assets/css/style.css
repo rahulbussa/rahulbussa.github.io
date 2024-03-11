@@ -1,5 +1,5 @@
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap');
 
 @font-face {
     font-family: 'Poppins';
@@ -34,7 +34,7 @@
     --soso-highlight-color: #f0e6f4;
     --soso-highlight-foreground: #37474F;
 
-    --body-font: 'Poppins', sans-serif;
+    --body-font: "League Spartan", sans-serif;
 
     --big-font-size: 2rem;
     --h1-font-size: 1.5rem;
@@ -601,6 +601,7 @@ img {
     text-align: center;
     color: var(--text-color-light);
     margin-top: 3rem;
+    color: #fff;
 }
 
 .footer__title,
