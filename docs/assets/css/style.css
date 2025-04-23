@@ -11,7 +11,7 @@
 
 @font-face {
     font-family: 'unicons-line';
-    src: url('fonts/line/unicons.woff2') format('woff2'),
+    src: url('/fonts/unicons.woff2') format('woff2'),
 }
 
 /* Varibles */
