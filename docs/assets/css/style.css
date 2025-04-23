@@ -8,6 +8,12 @@
          url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2) format('woff2');
   }
 
+
+@font-face {
+    font-family: 'unicons-line';
+    src: url('fonts/line/unicons.woff2') format('woff2'),
+}
+
 /* Varibles */
 
 :root {
