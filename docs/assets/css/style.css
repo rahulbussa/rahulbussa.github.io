@@ -14,6 +14,10 @@
     src: url('/fonts/unicons.woff2') format('woff2'),
 }
 
+/*font*/
+.uil-estate:before { content: '\eca5'; }
+.uil-user:before { content: '\ea0d'; }
+.uil-file-alt:before { content: '\e94b'; }
 /* Varibles */
 
 :root {
