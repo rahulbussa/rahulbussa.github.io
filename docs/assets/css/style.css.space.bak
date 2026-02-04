@@ -1,0 +1,713 @@
+:root {
+    color-scheme: only light;
+    --bg-deep: #050913;
+    --bg-mid: #0a1a2f;
+    --bg-accent: #162a4a;
+    --text: #f4f6fb;
+    --muted: #b5bed3;
+    --accent: #42f5d6;
+    --accent-soft: rgba(66, 245, 214, 0.2);
+    --gold: #f6c177;
+    --shadow: rgba(4, 8, 18, 0.65);
+    --card: rgba(15, 29, 52, 0.7);
+    --border: rgba(255, 255, 255, 0.08);
+    --mono: "Space Mono","Courier New", monospace;
+    --sans: "Space Grotesk", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--bg-deep);
+}
+
+.page{
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 20% 20%, rgba(66, 245, 214, 0.12), transparent 45%),
+                      radial-gradient(circle at 80% 10%, rgba(246, 193, 119, 0.15), transparent 55%),
+                      radial-gradient(circle at 50% 80%, rgba(84, 110, 255, 0.12), transparent 60%),
+                      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 45%, var(--bg-accent) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.page::before,
+.page::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.page::before {
+    background-image: radial-gradient(#ffffff 1px, transparent 1px ), radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 120px 120px, 80px 80px;
+    background-position: 0 0, 40px 60px;
+    animation: drift 40s linear infinite;
+}
+
+.page::after {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+    background-size: 140px 140px;
+    background-position: 20px 20px;
+    animation: drift 60s linear infinite reverse;
+}
+
+@keyframes drift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-80px, 60px, 0);
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.section{
+    padding: 5rem min(8vw, 6rem);
+    position: relative;
+    z-index: 1;
+}
+
+.header{
+    position: sticky;
+    top: 0;
+    z-index: 5 ;
+    backdrop-filter: blur(14px);
+    background: rgba(5,9,19,0.75);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem min(8vw, 6rem);
+}
+
+.nav__logo {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+
+}
+
+.nav__menu {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav__link {
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.nav__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+}
+
+.nav__link:hover::after,
+.nav__link.active::after {
+    transform: scaleX(1);
+}
+
+.nav__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.nav__toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+}
+
+.hero {
+    padding: 6rem;
+}
+
+.hero__grid {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    align-items: center;
+}
+
+.hero__content h1 {
+    font-size: clamp(2.5rem, 5vw, 4.4rem);
+    margin: 0.2rem 0;
+}
+
+.hero__content h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 0 0 1.5rem;
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.eyebrow {
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin: 0 0 0.8rem;
+}
+
+.lead {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+}
+
+.hero__actions {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.8rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #03171a;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 12px 30px rgba(66, 245, 214, 0.25);
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+
+.button--ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    box-shadow: none;
+}
+
+.hero__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.hero__visual {
+    position: relative;
+    min-height: 340px;
+    display: grid;
+    place-items: center;
+    perspective: 800px;
+}
+
+.astronaut-image {
+    position: absolute;
+    width: min(260px, 65vw);
+    right: 0;
+    bottom:-25%;
+    z-index: 2;
+    animation: float 6s ease-in-out infinite, drift 10s ease-in-out infinite;
+    filter: drop-shadow(0 18px 30px rgba(5, 10, 22, 0.5));
+    pointer-events: none;
+}
+
+.planet {
+    width: min(320px, 70vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    --light-x: 35%;
+    --light-y: 35%;
+    --spin-x: 0px;
+    background: radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 0.95), rgba(122, 159, 191, 0.9) 45%, #14253f 70%),
+                radial-gradient(circle at 65% 65%,rgba(66, 245, 214, 0.15), transparent 55%);
+    background-position: center, center;
+    box-shadow: 0 40px 90px rgba(8, 12, 24, 0.8);
+    position: relative;
+    transition: background-position 0.2s ease-out, box-shadow 0.2s ease-out;
+    overflow: hidden;
+}
+
+.planet__ring {
+    position: absolute;
+    width: 140%;
+    height: 45%;
+    border-radius: 50%;
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
+    top: 40%;
+    left: -20%;
+    transform: rotate(-10deg);
+}
+
+.planet__glow {
+    position: absolute;
+    inset: -12%;
+    border-radius: 50%;
+    background: radial-gradient( circle, rgba(66, 245, 214, 0.25), transparent 60%);
+    filter: blur(10px);
+    z-index: 1;
+}
+
+.planet::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 35%, rgba(255, 255, 255, 0.35), rgba(10, 24, 45, 0.15) 55%, rgba(6, 12, 24, 0.6) 100%);
+    pointer-events: none;
+}
+
+.orbit {
+    position: absolute;
+    inset: 15%;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    animation: orbit-rotate 18s linear infinite;
+}
+
+.orbit span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0  20px rgba(66, 245, 214, 0.6);
+    transform : translate(-50%, -50%);
+}
+
+.orbit--two {
+    inset: 5%;
+    animation-duration: 26s;
+}
+
+.orbit--two span{
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    box-shadow: 0 0 16px rgba(246, 193, 119, 0.6);
+}
+
+.orbit--three {
+    inset: 28%;
+    animation-duration: 14s;
+}
+
+.orbit--three span{
+    width: 4px;
+    height: 4px;
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255,255, 0.7);
+}
+
+.comet {
+    position: absolute;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(66, 245, 214, 0.6), rgba(255, 255, 255, 0));
+    opacity: 0.7;
+    filter: blur(0.4px);
+    animation: comet 6s linear infinite;
+    z-index: 0;
+}
+
+.comet--one {
+    top: 15%;
+    left: -10%;
+}
+
+.comet--two {
+    top: 70%;
+    right: -10%;
+    animation-delay: 2.5s;
+    animation-duration: 7s;
+}
+
+
+@keyframes orbit-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes drift {
+    0%, 100% {
+        transform: translateY(0) rotate(-2deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(2deg);
+    }
+}
+
+
+@keyframes comet {
+    0% {
+        transform: translateY(0) rotate(100deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(420px) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+
+@keyframes mini-comet {
+    0% {
+        transform: translateY(0) rotate(100deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(420px) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+.hero__badge {
+    position: absolute;
+    bottom: -40%;
+    right: 15%;
+    display: grid;
+    gap: 0.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px var(--shadow);
+    font-size: 0.85rem;
+}
+
+
+
+
+.scroll-indicator {
+    display: inline-block;
+    margin-top: 3rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+}
+
+
+.section__title {
+    margin-bottom: 2rem;
+}
+
+.section__subtitle h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0.2rem 0 0;
+}
+
+.section__subtitle {
+    max-width: 760px;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.mini-comet {
+    position: absolute;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(66, 245, 214, 0.6), rgba(255, 255, 255, 0));
+    animation: mini-comet 5s linear infinite;
+    opacity: 0.7;
+    z-index: 0;
+}
+
+.hero__visual .mini-comet {
+    width: 160px;
+    opacity: 0.6;
+}
+
+.mini-comet--hero-one {
+    top: 10%;
+    left: -35%;
+    animation-duration: 6.5s;
+}
+
+.mini-comet--hero-two {
+    top: 55%;
+    left: -45%;
+    animation-delay: 1.2s;
+    animation-duration: 7s;
+}
+
+.mini-comet--hero-three {
+    top: 80%;
+    left: -40%;
+    animation-delay: 2.2s;
+    animation-duration: 6s;
+}
+
+.about__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.about__card {
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 18px 40px var(--shadow);
+}
+
+
+.about__card h3 {
+    font-size: 2rem;
+    margin: 0 0 0.6rem;
+}
+
+.about__cta {
+    margin-top: 2.5rem;
+}
+
+.skills__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.skill-group {
+    padding: 1.8rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 18px 40px var(--shadow);
+}
+
+.skill-group h3 {
+    margin: 0 0 0.4rem;
+}
+
+.skill-group p {
+    margin: 0 0 1.5rem;
+    color: var(--muted);
+}
+
+.skill {
+    margin-bottom: 1.2rem;
+}
+
+.skill__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    margin-bottom: 0.45rem;
+}
+.skill__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.skill__bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: var(--level);
+    background: linear-gradient(90deg, var(--accent), rgba(66, 245, 214, 0.5));
+}
+
+.contact__grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.contact__copy {
+    font-size: 1.05rem;
+    color: var(--muted);
+}
+
+.contact__stats {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.contact__stats span {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+}
+
+.contact__form {
+    display: grid;
+    gap: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.8rem;
+    box-shadow: 0 20px 40px var(--shadow);
+}
+
+.contact__form label {
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.contact__form input,
+.contact__form textarea {
+    background: rgba(6, 12, 22, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    padding: 0.7rem 0.9rem;
+    border-radius: 10px;
+    font-family: var(--sans);
+}
+
+.contact__form textarea {
+    resize: vertical;
+}
+
+.footer {
+    padding: 3rem min(8vw, 6rem);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+    background: rgba(5, 9, 19, 0.85);
+}
+
+.footer__links {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.footer__note {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+@media (max-width: 860px) {
+    .nav__menu{
+        position: fixed;
+        top:72px;
+        right: 16px;
+        flex-direction: column;
+        background: rgba(7,12,22,0.96);
+        padding: 1.2rem 1.6rem;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        transform: translateY(-20px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav__menu.is-open{
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .naav__toggle {
+        display: flex;
+    }
+
+    .astronaut-image {
+        width: min(220px, 70vw);
+        right: -23%;
+        bottom: -60%;
+        z-index: 1;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .section {
+        padding: 4rem 1.5rem;
+    }
+
+    .nav{
+        padding: 1.2rem 1.5rem;
+    }
+}

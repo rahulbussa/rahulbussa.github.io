@@ -1,111 +1,84 @@
-const navMenu = document.getElementById('nav-menu');
-const navToggle = document.getElementById('nav-toggle');
-const navClose = document.getElementById('nav-close');
+const navToggle = document.querySelector(".nav__toggle");
+const navMenu = document.querySelector(".nav__menu");
+const navLinks = document.querySelectorAll(".nav__link");
 
-if(navToggle) {
-    navToggle.addEventListener('click', () => {
-        navMenu.classList.add('show-menu');
-    });
+if(navToggle && navMenu) {
+    navToggle.addEventListener("click", ()=>{
+        navMenu.classList.toggle("is-open");
+    })
 }
 
-if(navClose) {
-    navClose.addEventListener('click', ()=>{
-        navMenu.classList.remove('show-menu');
-    });
-}
-
-/* remove menu mobile */
-const navLinks = document.querySelectorAll('.nav__link');
-
-function linkAction() {
-    const navMenu = document.getElementById('nav-menu');
-
-    navMenu.classList.remove('show-menu');
-}
-
-navLinks.forEach(nav => nav.addEventListener('click', linkAction));
-
-const skillContent = document.getElementsByClassName('skills__content');
-const skillHeaders = document.querySelectorAll('.skills__header');
-
-function toggleSkills() {
-    let itemClass = this.parentNode.className;
-
-    for(let i=0; i< skillContent.length; i++) {
-        skillContent[i].className = 'skills__content skills__close';
-    }
-
-    if(itemClass === 'skills__content skills__close') {
-        this.parentNode.className = 'skills__content skills__open';
-    }
-}
-
-skillHeaders.forEach((header) => {
-    header.addEventListener('click', toggleSkills);
+navLinks.forEach((link) => {
+    link.addEventListener("click", ()=> {
+        navMenu.classList.remove('is-open');
+    })
 });
 
-/*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
-const sections = document.querySelectorAll('section[id]');
-
-function scrollActive(){
-    const scrollY = window.pageYOffset
-    if(sections){
-        sections.forEach(current =>{
-            const sectionHeight = current?.offsetHeight
-            const sectionTop = current?.offsetTop - 50;
-            sectionId = current?.getAttribute('id')
-
-            if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-                document.querySelector('.nav__menu a[href*=' + sectionId + ']')?.classList.add('active-link')
-            }else{
-                document.querySelector('.nav__menu a[href*=' + sectionId + ']')?.classList.remove('active-link')
-            }
-        });
-    }
-}
-window.addEventListener('scroll', scrollActive);
-
-/*==================== CHANGE BACKGROUND HEADER ====================*/ 
-function scrollHeader(){
-    const nav = document.getElementById('header')
-    // When the scroll is greater than 200 viewport height, add the scroll-header class to the header tag
-    if(this.scrollY >= 80) {
-        nav.classList.add('scroll-header');
-    } else {
-        nav.classList.remove('scroll-header')
-    }
-}
-window.addEventListener('scroll', scrollHeader);
-
-/*==================== SHOW SCROLL TOP ====================*/ 
-function scrollTop(){
-    const scrollTop = document.getElementById('scroll-up');
-    // When the scroll is higher than 560 viewport height, add the show-scroll class to the a tag with the scroll-top class
-    if(this.scrollY >= 560) {
-        scrollTop?.classList.add('show-scroll'); 
-    }
-    else {
-        scrollTop?.classList.remove('show-scroll')
-    }
-}
-window.addEventListener('scroll', scrollTop);
-
-
-
-
-
-const sr = ScrollReveal({
-    origin: 'top',
-    distance: '30px',
-    duration: 2000,
-    reset: true
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry)=> {
+        if(entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+        }
+    });
+},
+{
+    threshold: 0.2
 });
 
-sr.reveal(`.home__data, .home__img, .home__social,
-            .about__data, .about__img,
-            .services__content, .menu__content,
-            .app__data, .app__img,
-            .contact__data, .contact__button,
-            .footer__content`, {
-    interval: 200
-})
+document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+const sections = document.querySelectorAll("section[id]");
+
+const navMap = new Map();
+
+navLinks.forEach((link) => {
+    const href = link.getAttribute("href");
+    if(href && href.startsWith("#")) {
+        navMap.set(href.slice(1), link);
+    }
+});
+
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry)=> {
+        const link = navMap.get(entry.target.id);
+        if(link && entry.isIntersecting) {
+            navLinks.forEach((item)=> item.classList.remove("active"));
+            link.classList.add("active");
+        }
+    })
+},
+{ threshold: 0.4}
+);
+
+sections.forEach(section => sectionObserver.observe(section));
+
+const planet = document.querySelector(".planet");
+const heroVisual = document.querySelector(".hero__visual");
+
+if(planet && heroVisual) {
+    const updateRotation = (event) => {
+        const rect = heroVisual.getBoundingClientRect();
+        const xRatio = (event.clientX - rect.left) / rect.width - 0.5;
+        const yRatio = (event.clientY - rect.top) / rect.height - 0.5;
+
+        planet.style.setProperty("--spin-x", `${xRatio * 80}px`);
+        planet.style.setProperty("--light-x", `${50 + xRatio * 30}%`);
+        planet.style.setProperty("--light-y", `${40 + yRatio * 25}%`);
+    }
+
+    const resetRotation = () => {
+        planet.style.setProperty("--spin-x", "0px");
+        planet.style.setProperty("--light-x", "35%");
+        planet.style.setProperty("--light-y","35%");
+    };
+
+    heroVisual.addEventListener("mousemove", updateRotation);
+    heroVisual.addEventListener("mouseleave", resetRotation);
+    heroVisual.addEventListener("touchmove", (event)=> {
+        if(event.touches.length > 0) {
+            updateRotation(event.touches[0]);
+        }
+    });
+    heroVisual.addEventListener("touchend", resetRotation);
+}
