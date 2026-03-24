@@ -1691,15 +1691,16 @@
                     <input type="hidden" name="_next" value="https://rahulbussa.js.org?submitted=true#contact">
                     <div class="form-grid">
                         <div class="form-group">
-                            <input type="text" class="form-input" placeholder="Your Name" required>
+                            <input type="text" name="name" class="form-input" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-input" placeholder="Your Email" required>
+                            <input type="email" name="email" class="form-input" placeholder="Your Email" required>
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <textarea class="form-input" placeholder="Your Message" required></textarea>
+                        <textarea class="form-input" name="message" placeholder="Your Message" required></textarea>
                     </div>
+                    <input type="hidden" name="_subject" value="New Enquiry from portfolio website">
                     <button type="submit" class="submit-btn">
                         <span>Transmit Message</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
