@@ -215,7 +215,26 @@ html:not([data-theme="light"]) .brand-header-r-dark{display:block}
     nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');menuButton.setAttribute('aria-expanded','false')}));
     document.querySelector('#year').textContent=new Date().getFullYear();
     if('IntersectionObserver'in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.12});document.querySelectorAll('.panel,.pillar,.skill-card,.credential').forEach(el=>{el.classList.add('reveal');observer.observe(el)})}
-    if(new URLSearchParams(window.location.search).get('submitted')==='true'){const message=document.createElement('p');message.setAttribute('role','status');message.textContent='Thanks for reaching out. Your message has been submitted.';message.style.cssText='position:fixed;bottom:20px;right:20px;z-index:20;background:var(--accent);color:#111;padding:14px 18px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 12px 40px #0008';document.body.appendChild(message);window.history.replaceState({},document.title,window.location.pathname+'#contact')}
+    if(new URLSearchParams(window.location.search).get('submitted')==='true'){
+      const notice=document.createElement('div');
+      notice.setAttribute('role','status');
+      notice.setAttribute('aria-live','polite');
+      notice.style.cssText='position:fixed;bottom:20px;right:20px;z-index:1000;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 40px);background:var(--accent);color:#111;padding:14px 14px 14px 18px;border-radius:12px;font-size:13px;font-weight:700;line-height:1.45;box-shadow:0 12px 40px #0008';
+      const text=document.createElement('span');
+      text.textContent='Thanks for reaching out. Your message has been submitted.';
+      const close=document.createElement('button');
+      close.type='button';
+      close.setAttribute('aria-label','Close notification');
+      close.textContent='×';
+      close.style.cssText='flex:0 0 auto;display:grid;place-items:center;width:28px;height:28px;border:0;border-radius:7px;background:rgba(0,0,0,.10);color:inherit;font-size:22px;line-height:1;cursor:pointer';
+      let dismissed=false;
+      const dismiss=()=>{if(dismissed)return;dismissed=true;clearTimeout(autoDismiss);notice.remove()};
+      close.addEventListener('click',dismiss);
+      notice.append(text,close);
+      document.body.appendChild(notice);
+      const autoDismiss=window.setTimeout(dismiss,3000);
+      window.history.replaceState({},document.title,window.location.pathname+'#contact');
+    }
   </script>
 </body>
 </html>
