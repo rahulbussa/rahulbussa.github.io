@@ -180,7 +180,7 @@ html:not([data-theme="light"]) .brand-header-r-dark{display:block}
 </div></section>
 <section class="content-section" id="contact"><div class="container"><div class="section-head"><div class="section-kicker">05 / Contact</div><div><h2>Let’s build seamless digital experiences.</h2><p class="section-intro">I’m open to conversations about web and mobile experiences, modern frontend frameworks, design systems, reusable component architecture, Salesforce ecosystem integrations, and thoughtful AI-enabled interfaces. You can reach me through LinkedIn or email.</p></div></div>
 <div class="contact-wrap"><article class="panel"><div class="panel-label">Find me online</div><p class="contact-copy">I value collaborative teams that care about usability, accessibility, performance, and code quality—from early design decisions through production.</p><div class="contact-links"><a class="button" href="https://www.linkedin.com/in/rahulbussa/" rel="noopener noreferrer" target="_blank">LinkedIn ↗</a><a class="button button-secondary" href="https://github.com/rahulbussa/" rel="noopener noreferrer" target="_blank">GitHub ↗</a><a class="button button-secondary" href="mailto:rahulbussa@gmail.com">Email ↗</a></div></article>
-<article class="panel"><div class="panel-label">Start a conversation</div><form action="https://formsubmit.co/rahulbussa@gmail.com" class="contact-form" method="POST"><input name="_subject" type="hidden" value="Portfolio enquiry — Rahul Bussa"/><input name="_template" type="hidden" value="table"/><input name="_next" type="hidden" value="https://rahulbussa.js.org/?submitted=true#contact"/><div class="field"><label for="name">Your name</label><input autocomplete="name" id="name" name="name" placeholder="Name" required="" type="text"/></div><div class="field"><label for="email">Your email</label><input autocomplete="email" id="email" name="email" placeholder="you@company.com" required="" type="email"/></div><div class="field"><label for="message">How can I help?</label><textarea id="message" name="message" placeholder="A little context about your project or opportunity…" required=""></textarea></div><div><button class="button" type="submit">Send message ↗</button></div><p class="form-fineprint">This form is handled by FormSubmit. First-time submissions may require email activation from the service.</p></form></article></div>
+<article class="panel"><div class="panel-label">Start a conversation</div><form action="https://formsubmit.co/ajax/rahulbussa@gmail.com" class="contact-form" id="contact-form" method="POST"><input name="_subject" type="hidden" value="Portfolio enquiry — Rahul Bussa"/><input name="_template" type="hidden" value="table"/><div class="field"><label for="name">Your name</label><input autocomplete="name" id="name" name="name" placeholder="Name" required="" type="text"/></div><div class="field"><label for="email">Your email</label><input autocomplete="email" id="email" name="email" placeholder="you@company.com" required="" type="email"/></div><div class="field"><label for="message">How can I help?</label><textarea id="message" name="message" placeholder="A little context about your project or opportunity…" required=""></textarea></div><div><button class="button" type="submit">Send message ↗</button></div><p class="form-fineprint">This form is handled securely by FormSubmit.</p><p class="form-fineprint" id="form-status" role="status" aria-live="polite" hidden></p></form></article></div>
 </div></section>
 </main>
 <footer class="footer"><div class="container footer-inner"><span>© <span id="year"></span> Rahul Bussa · Built with care in India</span><div class="footer-links"><a href="https://www.linkedin.com/in/rahulbussa/" rel="noopener noreferrer" target="_blank">LinkedIn ↗</a><a href="https://github.com/rahulbussa/" rel="noopener noreferrer" target="_blank">GitHub ↗</a><a href="#home">Back to top ↑</a></div></div></footer>
@@ -214,27 +214,57 @@ html:not([data-theme="light"]) .brand-header-r-dark{display:block}
     menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')==='true';menuButton.setAttribute('aria-expanded',String(!open));nav.classList.toggle('open',!open)});
     nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');menuButton.setAttribute('aria-expanded','false')}));
     document.querySelector('#year').textContent=new Date().getFullYear();
-    if('IntersectionObserver'in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.12});document.querySelectorAll('.panel,.pillar,.skill-card,.credential').forEach(el=>{el.classList.add('reveal');observer.observe(el)})}
-    if(new URLSearchParams(window.location.search).get('submitted')==='true'){
+    // Submit through FormSubmit's AJAX endpoint so visitors stay on this page.
+    const contactForm=document.querySelector('#contact-form');
+    const formStatus=document.querySelector('#form-status');
+    const submitButton=contactForm.querySelector('button[type="submit"]');
+    contactForm.addEventListener('submit',async(event)=>{
+      event.preventDefault();
+      formStatus.hidden=false;
+      formStatus.textContent='Sending your message…';
+      submitButton.disabled=true;
+      submitButton.setAttribute('aria-busy','true');
+      try{
+        const response=await fetch(contactForm.action,{
+          method:'POST',
+          body:new FormData(contactForm),
+          headers:{'Accept':'application/json'}
+        });
+        const result=await response.json();
+        const ok=result.success===true||result.success==='true';
+        if(!response.ok||!ok){
+          const detail=result.message||result.error||'FormSubmit could not accept the message.';
+          formStatus.textContent=detail+' If the message mentions activation, open the latest FormSubmit activation email for rahulbussa@gmail.com and activate this form.';
+          return;
+        }
+        contactForm.reset();
+        formStatus.textContent='';
+        formStatus.hidden=true;
+        showFormNotice('Thanks for reaching out. Your message has been submitted.');
+      }catch(error){
+        formStatus.hidden=false;
+        formStatus.textContent='We couldn’t submit the message just now. Please try again, or email rahulbussa@gmail.com directly.';
+      }finally{
+        submitButton.disabled=false;
+        submitButton.removeAttribute('aria-busy');
+      }
+    });
+    function showFormNotice(message){
+      document.querySelector('#contact-success-notice')?.remove();
       const notice=document.createElement('div');
+      notice.id='contact-success-notice';
       notice.setAttribute('role','status');
       notice.setAttribute('aria-live','polite');
       notice.style.cssText='position:fixed;bottom:20px;right:20px;z-index:1000;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 40px);background:var(--accent);color:#111;padding:14px 14px 14px 18px;border-radius:12px;font-size:13px;font-weight:700;line-height:1.45;box-shadow:0 12px 40px #0008';
-      const text=document.createElement('span');
-      text.textContent='Thanks for reaching out. Your message has been submitted.';
-      const close=document.createElement('button');
-      close.type='button';
-      close.setAttribute('aria-label','Close notification');
-      close.textContent='×';
+      const text=document.createElement('span');text.textContent=message;
+      const close=document.createElement('button');close.type='button';close.setAttribute('aria-label','Close notification');close.textContent='×';
       close.style.cssText='flex:0 0 auto;display:grid;place-items:center;width:28px;height:28px;border:0;border-radius:7px;background:rgba(0,0,0,.10);color:inherit;font-size:22px;line-height:1;cursor:pointer';
-      let dismissed=false;
-      const dismiss=()=>{if(dismissed)return;dismissed=true;clearTimeout(autoDismiss);notice.remove()};
-      close.addEventListener('click',dismiss);
-      notice.append(text,close);
-      document.body.appendChild(notice);
+      const dismiss=()=>{clearTimeout(autoDismiss);notice.remove()};
+      close.addEventListener('click',dismiss);notice.append(text,close);document.body.appendChild(notice);
       const autoDismiss=window.setTimeout(dismiss,3000);
-      window.history.replaceState({},document.title,window.location.pathname+'#contact');
     }
+
+    if('IntersectionObserver'in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.12});document.querySelectorAll('.panel,.pillar,.skill-card,.credential').forEach(el=>{el.classList.add('reveal');observer.observe(el)})}
   </script>
 </body>
 </html>
