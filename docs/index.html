@@ -299,6 +299,103 @@ html:not([data-theme="light"]) .brand-header-r-dark{display:block}
     white-space: nowrap;
   }
 }
+/* Fix light/dark logo visibility */
+.brand-header-r-light {
+  display: block;
+}
+
+.brand-header-r-dark {
+  display: none;
+}
+
+html:not([data-theme="light"]) .brand-header-r-light {
+  display: none;
+}
+
+html:not([data-theme="light"]) .brand-header-r-dark {
+  display: block;
+}
+
+/* Fix mobile header spacing in both themes */
+@media (max-width: 600px) {
+  .nav {
+    flex-wrap: nowrap !important;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand.brand-horizontal-lockup {
+    flex: 1 1 auto !important;
+    max-width: none !important;
+    width: auto;
+    min-width: 0;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .brand-header-mark {
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    height: 40px;
+  }
+
+  .brand-header-r {
+    width: 34px !important;
+    height: 38px !important;
+    object-fit: contain;
+  }
+
+  .brand-header-copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap !important;
+    overflow: hidden;
+    overflow-wrap: normal !important;
+    gap: 3px;
+  }
+
+  .brand-header-name {
+    display: block;
+    font-size: 12px !important;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .brand-header-tagline {
+    display: block;
+    font-size: 8px !important;
+    line-height: 1.1;
+    letter-spacing: 0.05em !important;
+    white-space: nowrap;
+  }
+
+  .nav-controls {
+    flex: 0 0 auto;
+    gap: 5px;
+    margin-left: 0;
+  }
+
+  .theme-toggle {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    padding: 0 !important;
+  }
+
+  .theme-toggle span {
+    display: none !important;
+  }
+
+  .menu-toggle {
+    padding: 8px 9px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
 </style>
 </head>
 <body>
